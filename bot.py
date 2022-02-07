@@ -11,7 +11,7 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 WHITELIST_ROLE_NAME = "Whitelisted"
 
 
-bot = commands.Bot(command_prefix='!!', intents=discord.Intents.all())
+bot = commands.Bot(command_prefix='/', intents=discord.Intents.all())
 bot.remove_command('help')
 
 
@@ -20,9 +20,9 @@ async def on_ready():
     print(f'{bot.user.name} has connected to Discord!')
 
 @bot.command(pass_context=True)
-@commands.has_role("Admin") # This must be exactly the name of the appropriate role
+@commands.has_role("Moderator") # This must be exactly the name of the appropriate role
 async def whitelist(ctx):
-    channel = bot.get_channel(482465586925010944)
+    channel = bot.get_channel(938083691270402089)
     messages = await ctx.channel.history(limit=1000).flatten()
     names_list = set()
     Already_whitelisted_list = set()
@@ -30,14 +30,17 @@ async def whitelist(ctx):
     for msg in messages:
         if word in msg.content:
             if msg.mentions:
-                names_list.add(msg.mentions[0])
+                try:
+                    names_list.add(msg.mentions[1])
+                except IndexError:
+                    pass
 
-    with open("whitelisted.txt", "a") as file:
+    with open("whitelisted.txt", "a", encoding='utf8') as file:
         for name in names_list:
             if str(name) not in open('whitelisted.txt').read():
-                file.write(f'{name}\n')
                 var = discord.utils.get(ctx.guild.roles, name = WHITELIST_ROLE_NAME)
                 await name.add_roles(var)
+                file.write(f'{name}\n')               
             else:
                 Already_whitelisted_list.add(name)
 
@@ -50,13 +53,13 @@ async def whitelist(ctx):
         await channel.send('No one added to Whitelist')
 
 @bot.command(pass_context=True)
-@commands.has_role("Admin") # This must be exactly the name of the appropriate role
+@commands.has_role("Moderator") # This must be exactly the name of the appropriate role
 async def whitelist_remove(ctx, member: discord.Member):
-    channel = bot.get_channel(482465586925010944)
+    channel = bot.get_channel(938083691270402089)
     Deleted = False
-    with open("whitelisted.txt", "r") as f:
+    with open("whitelisted.txt", "r", encoding='utf8') as f:
         lines = f.readlines()
-    with open("whitelisted.txt", "w") as f:
+    with open("whitelisted.txt", "w", encoding='utf8') as f:
         for line in lines:
             if line.strip("\n") != str(member):
                 f.write(line)
@@ -69,11 +72,11 @@ async def whitelist_remove(ctx, member: discord.Member):
         await channel.send('User not found in the Whitelist')
 
 @bot.command(pass_context=True)
-@commands.has_role("Admin") # This must be exactly the name of the appropriate role
+@commands.has_role("Moderator") # This must be exactly the name of the appropriate role
 async def whitelist_add(ctx, member: discord.Member):
-    channel = bot.get_channel(482465586925010944)
+    channel = bot.get_channel(938083691270402089)
 
-    with open("whitelisted.txt", "a") as f:
+    with open("whitelisted.txt", "a", encoding='utf8') as f:
         if str(member) not in open('whitelisted.txt').read():
             f.write(f'{str(member)}\n')
             var = discord.utils.get(ctx.guild.roles, name = WHITELIST_ROLE_NAME)
@@ -102,7 +105,7 @@ async def on_command_error(self, ctx: commands.Context, error: commands.CommandE
 
 @bot.command(pass_context=True)
 async def help(ctx):
-    channel = bot.get_channel(482465586925010944)
+    channel = bot.get_channel(938083691270402089)
     embed = discord.Embed(
         color = discord.Color.red()
     )
