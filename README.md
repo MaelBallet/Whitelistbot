@@ -1,10 +1,34 @@
-2 Options:
+# Whitelist Bot
 
-Option 1 - Download git then execute -> pip install -r requirements.txt
+Setup your .env file
 
-Option 2 - Create virtual env using -> python -m venv .venv
+	# .env
+	DISCORD_TOKEN={your-bot-token}
 
-	 - Activate virtual env -> cd .venv/scripts
-				-> activate.bat
+## ***2 Options:***
 
-	 - Then install requirements in venv using -> pip install -r requirements.txt
+- #### *Option 1*
+Download git then execute -> 
+
+	pip install -r requirements.txt
+
+- #### *Option 2* 
+Create virtual env using 
+
+	python -m venv .venv
+
+Activate virtual env 
+
+	cd .venv/scripts
+	activate.bat
+
+Then install requirements in venv using
+
+	pip install -r requirements.txt
+
+
+## ***Start the bot***
+
+Execute bot.py
+
+	python bot.py
