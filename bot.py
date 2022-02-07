@@ -8,7 +8,7 @@ from discord.ext import commands
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
-WHITELIST_ROLE_NAME = "Whitelist"
+WHITELIST_ROLE_NAME = "Whitelisted"
 
 
 bot = commands.Bot(command_prefix='!!', intents=discord.Intents.all())
